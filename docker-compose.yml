@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  web:    
+    image: php:8.2-apache
+    container_name: TD3_apache
+    volumes:
+      - ./TD3/html:/var/www/html
+      - ./TD3/apache/sites_enabled:/etc/apache2/sites_enabled
+      - ./TD3/php/custom-php.ini:/use/local/etc/php/conf.d/custom-php.ini
+    ports:
+      - 8180:80
+    networks:
+      - network
+
+  postgres:
+    image: postgres
+    container_name: TD3_Posgres
+    restart: always
+    environment:
+      POSTGRES_DB: TD3
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 8181:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    networks:
+      - network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: TD3_pgadmin
+    restart: always
+    ports:
+      - "8182:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: mdp
+    volumes:
+      - ./TD3_pgadmin/data:/var/lib/pgadmin
+    networks:
+      - network
+
+  minetest:
+    image: lscr.io/linuxserver/minetest:latest
+    container_name: TD3_minetest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - "CLI_ARGS=--gameid minetest --port 25565" #optional
+    volumes:
+      - ./TD3_minetest/data:/config/.minetest
+    ports:
+      - 25565:25565/udp
+    restart: unless-stopped
+  
+networks:
+  network:
+    driver: bridge
