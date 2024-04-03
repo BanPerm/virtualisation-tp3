@@ -7,7 +7,7 @@ Etape 2:
 Etape 3:
 - Ben c'est tout en fait
 
-Le .yaml c'est celui 
+Le .yaml c'est celui de la SAE l'autre c'est l'exercice
 
 Produit de qualité fournit par Nikhil Ram et Peter Poirrier
 
